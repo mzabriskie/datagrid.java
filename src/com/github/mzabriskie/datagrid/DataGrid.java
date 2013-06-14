@@ -1,7 +1,3 @@
-package com.github.mzabriskie.datagrid;
-
-import java.util.*;
-
 /*
 
 Copyright (c) 2013 by Matt Zabriskie
@@ -25,6 +21,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+
+package com.github.mzabriskie.datagrid;
+
+import java.util.*;
 
 public class DataGrid {
 	private List<List<Object>> data;
@@ -90,7 +90,7 @@ public class DataGrid {
 		StringBuilder sb = new StringBuilder();
 		sb.append("+");
 		for (String column : columns) {
-			sb.append(repeat("-", getWidthForColumn(column)));
+			sb.append(repeat("-", getWidthForColumn(column) + 2));
 			sb.append("+");
 		}
 		return sb.toString();
@@ -136,7 +136,7 @@ public class DataGrid {
 
 	private String repeat(String str, int count) {
 		String result = "";
-		for (int i=0; i<count + 2; i++) {
+		for (int i=0; i<count; i++) {
 			result += str;
 		}
 		return result;
@@ -146,9 +146,7 @@ public class DataGrid {
 		String result = "";
 		String val = getValForColumn(obj);
 
-		for (int i=0; i<length - val.length(); i++) {
-			result += " ";
-		}
+		result += repeat(" ", length - val.length());
 
 		if (obj instanceof Number) {
 			result = result + val;
