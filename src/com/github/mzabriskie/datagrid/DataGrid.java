@@ -61,8 +61,8 @@ public class DataGrid {
 	}
 
 	public void render() {
-		String rowSeperator = getRowSeperator();
-		System.out.println(rowSeperator);
+		String rowSeparator = getRowSeparator();
+		System.out.println(rowSeparator);
 
 		System.out.print("|");
 		for (String column : columns) {
@@ -71,7 +71,7 @@ public class DataGrid {
 		}
 		System.out.print("\n");
 
-		System.out.println(rowSeperator);
+		System.out.println(rowSeparator);
 
 		for (List<Object> row : data) {
 			System.out.print("|");
@@ -83,10 +83,10 @@ public class DataGrid {
 			System.out.print("\n");
 		}
 
-		System.out.println(rowSeperator);
+		System.out.println(rowSeparator);
 	}
 
-	private String getRowSeperator() {
+	private String getRowSeparator() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("+");
 		for (String column : columns) {
