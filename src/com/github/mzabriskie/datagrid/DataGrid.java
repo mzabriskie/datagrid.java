@@ -27,12 +27,12 @@ package com.github.mzabriskie.datagrid;
 import java.util.*;
 
 public class DataGrid {
-	private List<List<Object>> data;
+	private List<List> data;
 	private List<String> columns;
 	private Map<String, Integer> widths;
 
 	private DataGrid() {
-		data = new ArrayList<List<Object>>();
+		data = new ArrayList<List>();
 		columns = new ArrayList<String>();
 		widths = new HashMap<String, Integer>();
 	}
@@ -50,41 +50,51 @@ public class DataGrid {
 		addDataRow(Arrays.asList(cols));
 	}
 
-	public void addDataRow(List<Object> row) {
+	public void addDataRow(List row) {
 		assert row.size() == columns.size() : "Invalid row: incorrect number of columns";
 		data.add(row);
 		syncWidths(row);
 	}
+
+    public int getColCount() {
+        return columns.size();
+    }
 
 	public int getRowCount() {
 		return data.size();
 	}
 
 	public void render() {
-		String rowSeparator = getRowSeparator();
-		System.out.println(rowSeparator);
+        StringBuilder sb = new StringBuilder();
+        render(sb);
+        System.out.println(sb);
+    }
 
-		System.out.print("|");
-		for (String column : columns) {
-			System.out.print(pad(column, getWidthForColumn(column)));
-			System.out.print("|");
-		}
-		System.out.print("\n");
+    public void render(StringBuilder sb) {
+        String rowSeparator = getRowSeparator();
+        sb.append(rowSeparator).append("\n");
 
-		System.out.println(rowSeparator);
+        sb.append("|");
+        for (String column : columns) {
+            sb.append(pad(column, getWidthForColumn(column)));
+            sb.append("|");
+        }
+        sb.append("\n");
 
-		for (List<Object> row : data) {
-			System.out.print("|");
-			for (int i=0; i<row.size(); i++) {
-				String key = getKeyForColumn(i);
-				System.out.print(pad(row.get(i), getWidthForColumn(key)));
-				System.out.print("|");
-			}
-			System.out.print("\n");
-		}
+        sb.append(rowSeparator).append("\n");
 
-		System.out.println(rowSeparator);
-	}
+        for (List row : data) {
+            sb.append("|");
+            for (int i=0; i<row.size(); i++) {
+                String key = getKeyForColumn(i);
+                sb.append(pad(row.get(i), getWidthForColumn(key)));
+                sb.append("|");
+            }
+            sb.append("\n");
+        }
+
+        sb.append(rowSeparator).append("\n");
+    }
 
 	private String getRowSeparator() {
 		StringBuilder sb = new StringBuilder();
@@ -119,11 +129,7 @@ public class DataGrid {
 		return Math.max(columns.get(getIdxForColumn(key)).length(), width);
 	}
 
-	private void syncWidths(int index) {
-		syncWidths(data.get(index));
-	}
-
-	private void syncWidths(List<Object> row) {
+	private void syncWidths(List row) {
 		for (int i=0; i<row.size(); i++) {
 			String key = getKeyForColumn(i);
 			String val = getValForColumn(row.get(i));
