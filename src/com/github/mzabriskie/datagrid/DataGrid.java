@@ -27,9 +27,65 @@ package com.github.mzabriskie.datagrid;
 import java.util.*;
 
 public class DataGrid {
-	private List<List> data;
-	private List<String> columns;
-	private Map<String, Integer> widths;
+	List<List> data;
+	List<String> columns;
+	Map<String, Integer> widths;
+
+    public static enum Sort {
+        ASC {
+            @Override
+            int compare(String a, String b) {
+                return a.compareTo(b);
+            }
+
+            @Override
+            int compare(Number a, Number b) {
+                int result = 0;
+                if (a instanceof Byte && b instanceof Byte) {
+                    result = ((Byte) a).compareTo((Byte) b);
+                } else if (a instanceof Short && b instanceof Short) {
+                    result = ((Short) a).compareTo((Short) b);
+                } else if (a instanceof Integer && b instanceof Integer) {
+                    result = ((Integer) a).compareTo((Integer) b);
+                } else if (a instanceof Long && b instanceof Long) {
+                    result = ((Long) a).compareTo((Long) b);
+                } else if (a instanceof Float && b instanceof Float) {
+                    result = ((Float) a).compareTo((Float) b);
+                } else if (a instanceof Double && b instanceof Double) {
+                    result = ((Double) a).compareTo((Double) b);
+                }
+                return result;
+            }
+        },
+        DESC {
+            @Override
+            int compare(String a, String b) {
+                return b.compareTo(a);
+            }
+
+            @Override
+            int compare(Number a, Number b) {
+                int result = 0;
+                if (a instanceof Byte && b instanceof Byte) {
+                    result = ((Byte) b).compareTo((Byte) a);
+                } else if (a instanceof Short && b instanceof Short) {
+                    result = ((Short) b).compareTo((Short) a);
+                } else if (a instanceof Integer && b instanceof Integer) {
+                    result = ((Integer) b).compareTo((Integer) a);
+                } else if (a instanceof Long && b instanceof Long) {
+                    result = ((Long) b).compareTo((Long) a);
+                } else if (a instanceof Float && b instanceof Float) {
+                    result = ((Float) b).compareTo((Float) a);
+                } else if (a instanceof Double && b instanceof Double) {
+                    result = ((Double) b).compareTo((Double) a);
+                }
+                return result;
+            }
+        };
+
+        abstract int compare(String a, String b);
+        abstract int compare(Number a, Number b);
+    }
 
 	private DataGrid() {
 		data = new ArrayList<List>();
@@ -46,23 +102,54 @@ public class DataGrid {
 		this(Arrays.asList(cols));
 	}
 
-	public void addDataRow(Object... cols) {
-		addDataRow(Arrays.asList(cols));
+	public void add(Object... cols) {
+		add(Arrays.asList(cols));
 	}
 
-	public void addDataRow(List row) {
-		assert row.size() == columns.size() : "Invalid row: incorrect number of columns";
+	public void add(List row) {
+		assert row.size() == columns.size() : "Invalid data: incorrect number of columns";
 		data.add(row);
 		syncWidths(row);
 	}
 
-    public int getColCount() {
-        return columns.size();
-    }
-
-	public int getRowCount() {
+	public int size() {
 		return data.size();
 	}
+
+    public void clear() {
+        data.clear();
+        widths.clear();
+    }
+
+    public void sort(String key) {
+        sort(key, Sort.ASC);
+    }
+
+    public void sort(String key, Sort sort) {
+        sort(getIdxForColumn(key), sort);
+    }
+
+    public void sort(int index) {
+        sort(index, Sort.ASC);
+    }
+
+    public void sort(final int index, final Sort sort) {
+        Collections.sort(data, new Comparator<List>() {
+            @Override
+            public int compare(List a, List b) {
+                int result;
+                Object val1 = a.get(index);
+                Object val2 = b.get(index);
+
+                if (val1 instanceof Number && val2 instanceof Number) {
+                    result = sort.compare((Number) val1, (Number) val2);
+                } else {
+                    result = sort.compare(getValForColumn(val1), getValForColumn(val2));
+                }
+                return result;
+            }
+        });
+    }
 
 	public void render() {
         StringBuilder sb = new StringBuilder();
