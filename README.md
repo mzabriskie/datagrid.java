@@ -1,7 +1,9 @@
 datagrid.java
 =============
 
-DataGrid for Java
+Command line DataGrid for Java
+
+### Creating a DataGrid
 
 ```java
 DataGrid grid = new DataGrid("ID", "FirstName", "LastName", "EmailAddr");
@@ -30,3 +32,17 @@ Code above will output the following data grid:
 	|  4 | Betty     | Rubble     | betty.rubble@example.com     |
 	+----+-----------+------------+------------------------------+
 	4 rows in set
+	
+### Sorting a DataGrid
+
+```java
+// DataGrid can be sorted using the name of the column
+grid.sort("FirstName");
+
+// Alternatively you can use the index of the column
+grid.sort(1);
+
+// By default sorting is done ascending
+// You can control the sorting direction using DataGrid.Sort
+grid.sort("FirstName", DataGrid.Sort.DESC);
+```
