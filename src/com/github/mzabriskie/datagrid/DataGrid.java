@@ -93,46 +93,105 @@ public class DataGrid {
 		widths = new HashMap<String, Integer>();
 	}
 
-	public DataGrid(List<String> cols) {
+    /**
+     * Constructs a DataGrid object using the {@link java.util.List} specified as the column names.
+     *
+     * @param cols the names of the columns to be used for this DataGrid
+     */
+    public DataGrid(List<String> cols) {
 		this();
 		columns = cols;
 	}
 
-	public DataGrid(String... cols) {
+    /**
+     * Constructs a DataGrid object using the {@link java.lang.String[]} specified as the column names.
+     *
+     * @param cols the names of the columns to be used for this DataGrid
+     */
+    public DataGrid(String... cols) {
 		this(Arrays.asList(cols));
 	}
 
-	public void add(Object... cols) {
-		add(Arrays.asList(cols));
+    /**
+     * Appends the {@link java.lang.Object[]} specified to the end of the DataGrid.
+     *
+     * @param row the data to be appended to this DataGrid
+     */
+    public void add(Object... row) {
+		add(Arrays.asList(row));
 	}
 
-	public void add(List row) {
+    /**
+     * Appends the {@link java.util.List} specified to the end of the DataGrid.
+     *
+     * @param row the data to be appended to this DataGrid
+     */
+    public void add(List row) {
 		assert row.size() == columns.size() : "Invalid data: incorrect number of columns";
 		data.add(row);
 		syncWidths(row);
 	}
 
-	public int size() {
+    /**
+     * Returns the number of rows in this DataGrid.
+     *
+     * @return the number of rows in this DataGrid
+     */
+    public int size() {
 		return data.size();
 	}
 
+    /**
+     * Removes all of the rows from this DataGrid.
+     */
     public void clear() {
         data.clear();
         widths.clear();
     }
 
+    /**
+     * Test if this DataGrid has no rows.
+     *
+     * @return <code>true</code> if this list has no elements; <code>false</code> otherwise
+     */
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
+
+    /**
+     * Sort this DataGrid using the column specified using an ascending sort order.
+     *
+     * @param key the name of the column to sort this DataGrid by
+     */
     public void sort(String key) {
         sort(key, Sort.ASC);
     }
 
+    /**
+     * Sort this DataGrid using the column specified using the sort order specified.
+     *
+     * @param key the name of the column to sort this DataGrid by
+     * @param sort the sort order to use when sorting this DataGrid
+     */
     public void sort(String key, Sort sort) {
         sort(getIdxForColumn(key), sort);
     }
 
+    /**
+     * Sort this DataGrid using the column specified using an ascending sort order.
+     *
+     * @param index the index of the column to sort this DataGrid by
+     */
     public void sort(int index) {
         sort(index, Sort.ASC);
     }
 
+    /**
+     * Sort this DataGrid using the column specified using the sort order specified.
+     *
+     * @param index the index of the column to sort this DataGrid by
+     * @param sort the sort order to use when sorting this DataGrid
+     */
     public void sort(final int index, final Sort sort) {
         Collections.sort(data, new Comparator<List>() {
             @Override
@@ -151,12 +210,20 @@ public class DataGrid {
         });
     }
 
-	public void render() {
+    /**
+     * Render this DataGrid using the {@link java.io.PrintStream} specified by System.out.
+     */
+    public void render() {
         StringBuilder sb = new StringBuilder();
         render(sb);
         System.out.println(sb);
     }
 
+    /**
+     * Render this DataGrid using the {@link java.lang.StringBuilder} specified.
+     *
+     * @param sb the {@link java.lang.StringBuilder} to render this DataGrid to
+     */
     public void render(StringBuilder sb) {
         String rowSeparator = getRowSeparator();
         sb.append(rowSeparator).append("\n");

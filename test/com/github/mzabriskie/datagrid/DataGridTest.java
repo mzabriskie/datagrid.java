@@ -187,6 +187,7 @@ public class DataGridTest extends Assert {
         //2. Remove data from the grid and make sure it's been removed
         grid.clear();
         assertEquals(0, grid.size());
+        assertTrue(grid.isEmpty());
 
         //3. Add new data and make sure widths have been reset correctly
         StringBuilder sb = new StringBuilder();
