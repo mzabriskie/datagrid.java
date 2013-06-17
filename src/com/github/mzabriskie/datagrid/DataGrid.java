@@ -33,80 +33,18 @@ public class DataGrid {
 
     public static enum Sort {
         ASC {
-            @Override
-            int compare(Calendar a, Calendar b) {
+            <T extends Comparable<T>> int compare(T a, T b) {
                 return a.compareTo(b);
-            }
-
-            @Override
-            int compare(Date a, Date b) {
-                return a.compareTo(b);
-            }
-
-            @Override
-            int compare(String a, String b) {
-                return a.compareTo(b);
-            }
-
-            @Override
-            int compare(Number a, Number b) {
-                int result = 0;
-                if (a instanceof Byte && b instanceof Byte) {
-                    result = ((Byte) a).compareTo((Byte) b);
-                } else if (a instanceof Short && b instanceof Short) {
-                    result = ((Short) a).compareTo((Short) b);
-                } else if (a instanceof Integer && b instanceof Integer) {
-                    result = ((Integer) a).compareTo((Integer) b);
-                } else if (a instanceof Long && b instanceof Long) {
-                    result = ((Long) a).compareTo((Long) b);
-                } else if (a instanceof Float && b instanceof Float) {
-                    result = ((Float) a).compareTo((Float) b);
-                } else if (a instanceof Double && b instanceof Double) {
-                    result = ((Double) a).compareTo((Double) b);
-                }
-                return result;
             }
         },
         DESC {
             @Override
-            int compare(Calendar a, Calendar b) {
+            <T extends Comparable<T>> int compare(T a, T b) {
                 return b.compareTo(a);
-            }
-
-            @Override
-            int compare(Date a, Date b) {
-                return b.compareTo(a);
-            }
-
-            @Override
-            int compare(String a, String b) {
-                return b.compareTo(a);
-            }
-
-            @Override
-            int compare(Number a, Number b) {
-                int result = 0;
-                if (a instanceof Byte && b instanceof Byte) {
-                    result = ((Byte) b).compareTo((Byte) a);
-                } else if (a instanceof Short && b instanceof Short) {
-                    result = ((Short) b).compareTo((Short) a);
-                } else if (a instanceof Integer && b instanceof Integer) {
-                    result = ((Integer) b).compareTo((Integer) a);
-                } else if (a instanceof Long && b instanceof Long) {
-                    result = ((Long) b).compareTo((Long) a);
-                } else if (a instanceof Float && b instanceof Float) {
-                    result = ((Float) b).compareTo((Float) a);
-                } else if (a instanceof Double && b instanceof Double) {
-                    result = ((Double) b).compareTo((Double) a);
-                }
-                return result;
             }
         };
 
-        abstract int compare(Calendar a, Calendar b);
-        abstract int compare(Date a, Date b);
-        abstract int compare(String a, String b);
-        abstract int compare(Number a, Number b);
+        abstract <T extends Comparable<T>> int compare(T a, T b);
     }
 
 	private DataGrid() {
@@ -222,8 +160,18 @@ public class DataGrid {
                 Object val1 = a.get(index);
                 Object val2 = b.get(index);
 
-                if (val1 instanceof Number && val2 instanceof Number) {
-                    result = sort.compare((Number) val1, (Number) val2);
+                if (val1 instanceof Byte && val2 instanceof Byte) {
+                    result = sort.compare((Byte) val1, (Byte) val2);
+                } else if (val1 instanceof Short && val2 instanceof Short) {
+                    result = sort.compare((Short) val1, (Short) val2);
+                } else if (val1 instanceof Integer && val2 instanceof Integer) {
+                    result = sort.compare((Integer) val1, (Integer) val2);
+                } else if (val1 instanceof Long && val2 instanceof Long) {
+                    result = sort.compare((Long) val1, (Long) val2);
+                } else if (val1 instanceof Float && val2 instanceof Float) {
+                    result = sort.compare((Float) val1, (Float) val2);
+                } else if (val1 instanceof Double && val2 instanceof Double) {
+                    result = sort.compare((Double) val1, (Double) val2);
                 } else if (val1 instanceof Date && val2 instanceof Date) {
                     result = sort.compare((Date) val1, (Date) val2);
                 } else if (val1 instanceof Calendar && val2 instanceof Calendar) {
