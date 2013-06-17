@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DataGridTest extends Assert {
@@ -134,21 +136,112 @@ public class DataGridTest extends Assert {
 
     @Test
     public void testSortingNumbers() {
-        grid.add(10, "a", "b", "c");
-        grid.add(140, "a", "b", "c");
-        grid.add(4, "a", "b", "c");
-        grid.add(1, "a", "b", "c");
-        grid.add(14, "a", "b", "c");
-        grid.add(100, "a", "b", "c");
-        grid.sort(0);
+        int a = 1;
+        int b = 4;
+        int c = 10;
+        int d = 14;
+        int e = 100;
+        int f = 140;
 
+        grid = new DataGrid("Number");
+        grid.add(c);
+        grid.add(f);
+        grid.add(b);
+        grid.add(a);
+        grid.add(d);
+        grid.add(e);
+
+        //1. Sort numbers ascending and make sure they are correctly ordered
+        grid.sort(0);
         List<List> data = grid.data;
-        assertEquals(1, data.get(0).get(0));
-        assertEquals(4, data.get(1).get(0));
-        assertEquals(10, data.get(2).get(0));
-        assertEquals(14, data.get(3).get(0));
-        assertEquals(100, data.get(4).get(0));
-        assertEquals(140, data.get(5).get(0));
+        assertEquals(a, data.get(0).get(0));
+        assertEquals(b, data.get(1).get(0));
+        assertEquals(c, data.get(2).get(0));
+        assertEquals(d, data.get(3).get(0));
+        assertEquals(e, data.get(4).get(0));
+        assertEquals(f, data.get(5).get(0));
+
+        //2. Sort numbers descending and make sure they are correctly ordered
+        grid.sort(0, DataGrid.Sort.DESC);
+        data = grid.data;
+        assertEquals(f, data.get(0).get(0));
+        assertEquals(e, data.get(1).get(0));
+        assertEquals(d, data.get(2).get(0));
+        assertEquals(c, data.get(3).get(0));
+        assertEquals(b, data.get(4).get(0));
+        assertEquals(a, data.get(5).get(0));
+    }
+
+    @Test
+    public void testSortingDates() {
+        long today = new Date().getTime();
+        long day = (1000 * 60 * 60 * 24);
+        Date a = new Date(today);
+        Date b = new Date(today + (day * 30));
+        Date c = new Date(today + (day * 60));
+        Date d = new Date(today + (day * 90));
+        Date e = new Date(today + (day * 120));
+
+        grid = new DataGrid("Date");
+        grid.add(a);
+        grid.add(d);
+        grid.add(e);
+        grid.add(c);
+        grid.add(b);
+
+        //1. Sort dates ascending and make sure they are correctly ordered
+        grid.sort(0);
+        List<List> data = grid.data;
+        assertEquals(a, data.get(0).get(0));
+        assertEquals(b, data.get(1).get(0));
+        assertEquals(c, data.get(2).get(0));
+        assertEquals(d, data.get(3).get(0));
+        assertEquals(e, data.get(4).get(0));
+
+        //2. Sort dates descending and make sure they are correctly ordered
+        grid.sort(0, DataGrid.Sort.DESC);
+        data = grid.data;
+        assertEquals(e, data.get(0).get(0));
+        assertEquals(d, data.get(1).get(0));
+        assertEquals(c, data.get(2).get(0));
+        assertEquals(b, data.get(3).get(0));
+        assertEquals(a, data.get(4).get(0));
+    }
+
+    @Test
+    public void testSortingCalendars() {
+        long today = new Date().getTime();
+        long day = (1000 * 60 * 60 * 24);
+        Calendar a = Calendar.getInstance(); a.setTimeInMillis(today);
+        Calendar b = Calendar.getInstance(); b.setTimeInMillis(today + (day * 30));
+        Calendar c = Calendar.getInstance(); c.setTimeInMillis(today + (day * 60));
+        Calendar d = Calendar.getInstance(); d.setTimeInMillis(today + (day * 90));
+        Calendar e = Calendar.getInstance(); e.setTimeInMillis(today + (day * 120));
+
+        grid = new DataGrid("Calendar");
+        grid.add(a);
+        grid.add(d);
+        grid.add(e);
+        grid.add(c);
+        grid.add(b);
+
+        //1. Sort calendars ascending and make sure they are correctly ordered
+        grid.sort(0);
+        List<List> data = grid.data;
+        assertEquals(a, data.get(0).get(0));
+        assertEquals(b, data.get(1).get(0));
+        assertEquals(c, data.get(2).get(0));
+        assertEquals(d, data.get(3).get(0));
+        assertEquals(e, data.get(4).get(0));
+
+        //2. Sort calendars descending and make sure they are correctly ordered
+        grid.sort(0, DataGrid.Sort.DESC);
+        data = grid.data;
+        assertEquals(e, data.get(0).get(0));
+        assertEquals(d, data.get(1).get(0));
+        assertEquals(c, data.get(2).get(0));
+        assertEquals(b, data.get(3).get(0));
+        assertEquals(a, data.get(4).get(0));
     }
 
     @Test

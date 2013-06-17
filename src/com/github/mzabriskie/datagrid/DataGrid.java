@@ -34,6 +34,16 @@ public class DataGrid {
     public static enum Sort {
         ASC {
             @Override
+            int compare(Calendar a, Calendar b) {
+                return a.compareTo(b);
+            }
+
+            @Override
+            int compare(Date a, Date b) {
+                return a.compareTo(b);
+            }
+
+            @Override
             int compare(String a, String b) {
                 return a.compareTo(b);
             }
@@ -59,6 +69,16 @@ public class DataGrid {
         },
         DESC {
             @Override
+            int compare(Calendar a, Calendar b) {
+                return b.compareTo(a);
+            }
+
+            @Override
+            int compare(Date a, Date b) {
+                return b.compareTo(a);
+            }
+
+            @Override
             int compare(String a, String b) {
                 return b.compareTo(a);
             }
@@ -83,6 +103,8 @@ public class DataGrid {
             }
         };
 
+        abstract int compare(Calendar a, Calendar b);
+        abstract int compare(Date a, Date b);
         abstract int compare(String a, String b);
         abstract int compare(Number a, Number b);
     }
@@ -202,8 +224,12 @@ public class DataGrid {
 
                 if (val1 instanceof Number && val2 instanceof Number) {
                     result = sort.compare((Number) val1, (Number) val2);
+                } else if (val1 instanceof Date && val2 instanceof Date) {
+                    result = sort.compare((Date) val1, (Date) val2);
+                } else if (val1 instanceof Calendar && val2 instanceof Calendar) {
+                    result = sort.compare((Calendar) val1, (Calendar) val2);
                 } else {
-                    result = sort.compare(getValForColumn(val1), getValForColumn(val2));
+                    result = sort.compare(String.valueOf(val1), String.valueOf(val2));
                 }
                 return result;
             }
@@ -271,8 +297,18 @@ public class DataGrid {
 		return columns.get(index);
 	}
 
-	private String getValForColumn(Object val) {
-		return String.valueOf(val);
+	private String getDisplayForColumn(Object val) {
+        String display;
+
+        if (val instanceof Calendar) {
+            // Calendar.toString produces a less than human friendly result.
+            // Display Date.toString instead.
+            display = ((Calendar) val).getTime().toString();
+        } else {
+            display = String.valueOf(val);
+        }
+
+		return display;
 	}
 
 	private int getWidthForColumn(String key) {
@@ -286,7 +322,7 @@ public class DataGrid {
 	private void syncWidths(List row) {
 		for (int i=0; i<row.size(); i++) {
 			String key = getKeyForColumn(i);
-			String val = getValForColumn(row.get(i));
+			String val = getDisplayForColumn(row.get(i));
 
 			if (widths.get(key) == null || val.length() > widths.get(key)) {
 				widths.put(key, val.length());
@@ -304,14 +340,14 @@ public class DataGrid {
 
 	private String pad(Object obj, int length) {
 		String result = "";
-		String val = getValForColumn(obj);
+		String display = getDisplayForColumn(obj);
 
-		result += repeat(" ", length - val.length());
+		result += repeat(" ", length - display.length());
 
 		if (obj instanceof Number) {
-			result = result + val;
+			result = result + display;
 		} else {
-			result = val + result;
+			result = display + result;
 		}
 
 		return " " + result + " ";
