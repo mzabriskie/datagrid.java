@@ -1,5 +1,4 @@
 language: java
-install: ant deps
 email:
   on_failure: change
   on_success: never
