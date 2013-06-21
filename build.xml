@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project name="datagrid" default="build">
+
+    <property name="lib.dir" location="./lib"/>
+    <property name="out.dir" location="./out"/>
+    <property name="src.dir" location="./src"/>
+    <property name="test.dir" location="./test"/>
+
+    <target name="build">
+        <mkdir dir="${out.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${out.dir}"
+               includeantruntime="true"
+                source="1.5"/>
+        <javac srcdir="${test.dir}"
+               destdir="${out.dir}"
+               includeantruntime="true"
+               source="1.5"
+               classpath="${lib.dir}/junit-4.10.jar"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${out.dir}"/>
+    </target>
+
+    <target name="test" depends="build">
+        <junit fork="true">
+            <classpath>
+                <pathelement location="${out.dir}"/>
+                <pathelement location="${lib.dir}/junit-4.10.jar"/>
+            </classpath>
+            <batchtest>
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test*" />
+                </fileset>
+            </batchtest>
+            <formatter type="brief" usefile="false"/>
+            <assertions><enable/></assertions>
+        </junit>
+    </target>
+
+</project>
