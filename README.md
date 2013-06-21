@@ -1,4 +1,4 @@
-datagrid.java
+datagrid.java [![Build Status](https://travis-ci.org/mzabriskie/datagrid.java.png?branch=master)](https://travis-ci.org/mzabriskie/datagrid.java)
 =============
 
 Command line DataGrid for Java
