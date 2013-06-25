@@ -46,3 +46,15 @@ grid.sort(1);
 // You can control the sorting direction using DataGrid.Sort
 grid.sort("FirstName", DataGrid.Sort.DESC);
 ```
+
+### Building and Testing
+
+You can build the source using ant:
+
+	ant build
+	
+This will compile the source and place the output in a folder called <em>out</em> under the root directory of the project.
+
+You can likewise run the test suite using ant:
+
+	ant test
