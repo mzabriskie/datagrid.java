@@ -47,6 +47,22 @@ grid.sort(1);
 grid.sort("FirstName", DataGrid.Sort.DESC);
 ```
 
+### DataGrid API
+
+- DataGrid(List&lt;String&gt; cols) - Constructs a <code>DataGrid</code> object using the <code>java.util.List</code> specified as the column names
+- DataGrid(String… cols) - Constructs a <code>DataGrid</code> object using the <code>java.lang.String[]</code> specified as the column names
+- add(Object… row) - Appends the <code>Object[]</code> specified to the end of the <code>DataGrid</code> rows
+- add(List row) - Appends the <code>java.util.List</code> specified to the end of the <code>DataGrid</code> rows
+- size - Returns the number of rows in this <code>DataGrid</code>
+- clear - Removes all the rows from this <code>DataGrid</code>
+- isEmpty - Test if this <code>DataGrid</code> has no rows
+- sort(String key) - Sort this <code>DataGrid</code> using the column specified using an ascending sort order
+- sort(String key, Sort sort) - Sort this <code>DataGrid</code> using the column and sort order specified
+- sort(int key) - Sort this <code>DataGrid</code> using the column specified using an ascending sort order
+- sort(int key, Sort sort) - Sort this <code>DataGrid</code> using the column and sort order specified
+- render - Render this <code>DataGrid</code> using the <code>java.io.PrintStream</code> specified by <code>System.out</code>
+- render(StringBuilder sb) - Render this <code>DataGrid</code> using the <code>java.lang.StringBuilder</code> specified
+
 ### Building and Testing
 
 You can build the source using ant:
