@@ -33,6 +33,7 @@ public class DataGrid {
 
     public static enum Sort {
         ASC {
+            @Override
             <T extends Comparable<T>> int compare(T a, T b) {
                 return a.compareTo(b);
             }
