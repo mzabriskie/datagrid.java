@@ -106,7 +106,7 @@ Render this <code>DataGrid</code> using the <code>java.lang.StringBuilder</code>
 You can build the source using ant:
 
 ```bash
-	ant build
+ant build
 ```
 	
 This will compile the source and place the output in a folder called <em>out</em> under the root directory of the project.
@@ -114,5 +114,5 @@ This will compile the source and place the output in a folder called <em>out</em
 You can likewise run the test suite using ant:
 
 ```bash
-	ant test
+ant test
 ```
